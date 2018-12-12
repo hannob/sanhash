@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# By Hanno Böck, https://github.com/hannob/sanhash
+# License: CC0
+
+if [[ -z "$1" ]] || [[ -n "$2" ]]; then
+	echo -e "Usage:"
+	echo -e "\t$0 [file]"
+	exit 1
+fi
+
+# Replace memory addresses and PID with static value,
+# calculate sha256, truncate to 32 chars
+sed -e 's:0x[0-9a-f]*:0xZZZZ:g' -e 's:==[0-9]*==:==PID==:g' "$1" | \
+	sha256sum | \
+	cut -c1-32
