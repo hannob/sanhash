@@ -9,8 +9,10 @@ if [[ -z "$1" ]] || [[ -n "$2" ]]; then
 	exit 1
 fi
 
-# Replace memory addresses and PID with static value,
+# Replace memory addresses, thread id and PID with static value,
 # calculate sha256, truncate to 32 chars
-sed -e 's:0x[0-9a-f]*:0xZZZZ:g' -e 's:==[0-9]*==:==PID==:g' "$1" | \
+sed -e 's:0x[0-9a-f]*:0xZZZZ:g' -e 's:==[0-9]*==:==PID==:g' \
+	-e 's:thread T[0-9]*:thread TZZ:g' \
+	"$1" | \
 	sha256sum | \
 	cut -c1-32
